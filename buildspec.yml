@@ -3,4 +3,4 @@ version: 0.2
 phases:
   build:
     commands:
-      - aws s3 cp . s3://sample-s3-bucket-nc --recursive
+      - aws ec2 create-snapshot --volume-id vol-07c0f0b3ae500475d --description "This is my sample volume snapshot"
