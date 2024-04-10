@@ -4,4 +4,4 @@ phases:
   build:
     commands:
       - aws ec2 create-snapshot --volume-id vol-07c0f0b3ae500475d --description "This is my sample volume snapshot"
-      - aws ec2 create-image --instance-id i-042defc9e8e287933 --name "sample-7pm-AMI" --description "An AMI for my sample server"
+      - aws ec2 create-image --instance-id i-042defc9e8e287933 --name "sample-7pm-AMI-$CODEBUILD_BUILD_NUMBER" --description "An AMI for my sample server"
