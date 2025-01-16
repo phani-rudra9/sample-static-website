@@ -1,6 +1,6 @@
 // vars/demo.groovy
 
-def call() {
+def call(String instanceId, String region, String s3Bucket) {
     echo "🚀 Executing SSM command on instance: ${instanceId} in region: ${region}"
 
     // Run AWS SSM Command to execute deployment script on EC2
