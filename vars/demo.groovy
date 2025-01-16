@@ -49,7 +49,7 @@ def call(String instanceId, String region, String s3Bucket) {
         "sudo docker images -q | xargs -r sudo docker rmi -f",
 
         "echo \\"[INFO] Building and Running Docker Container...\\"",
-        "cd /home/ubuntu/deploy",
+        "cd /home/ubuntu/demo",
         "if [ -f Dockerfile ]; then",
         "    export DOCKER_BUILDKIT=1",
         "    sudo docker build -t app-container .",
