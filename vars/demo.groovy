@@ -1,8 +1,7 @@
 // vars/demo.groovy
-
 def call(String instanceId, String region, String s3Bucket) {
     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-ssm-credentials']]) {
-        echo "🚀 Executing SSM command on instance: ${instanceId} in region: ${region}"
+        echo "Executing SSM command on instance: ${instanceId} in region: ${region}"
 
         // Run AWS SSM Command to execute deployment script on EC2
         sh """
