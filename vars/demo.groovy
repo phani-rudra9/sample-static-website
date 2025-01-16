@@ -3,6 +3,11 @@
 def call(String instanceId, String region, String s3Bucket) {
     echo "🚀 Executing SSM command on instance: ${instanceId} in region: ${region}"
 
+    // Ensure the S3 bucket name is correctly set
+    if (!s3Bucket?.trim()) {
+        error "❌ S3_BUCKET is empty or undefined! Please check the Jenkinsfile."
+    }
+
     // Run AWS SSM Command to execute deployment script on EC2
     sh """
     aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=${instanceId}" --parameters 'commands=[
@@ -17,16 +22,16 @@ def call(String instanceId, String region, String s3Bucket) {
         "if ! command -v aws &> /dev/null; then",
         "    echo \\"[INFO] Installing AWS CLI...\\"",
         "    sudo apt-get remove -y awscli",
-        "    curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",
+        "    curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip",
         "    unzip awscliv2.zip",
         "    sudo ./aws/install",
         "    aws --version",
         "    rm -rf awscliv2.zip aws",
         "fi",
 
-        "echo \\"[INFO] Downloading deployment package from S3...\\"",
+        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: ${s3Bucket})...\\"",
         "mkdir -p /home/ubuntu/deploy",
-        "aws s3 cp s3://\${s3Bucket}/demo.zip /home/ubuntu/deploy/demo.zip",
+        "aws s3 cp s3://${s3Bucket}/demo.zip /home/ubuntu/deploy/demo.zip",
         "unzip -o /home/ubuntu/deploy/demo.zip -d /home/ubuntu/demo",
 
         "echo \\"[INFO] Checking for Docker installation...\\"",
