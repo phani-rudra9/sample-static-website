@@ -17,7 +17,7 @@ def call(String instanceId, String region, String s3Bucket) {
         "if ! command -v aws &> /dev/null; then",
         "    echo \\"[INFO] Installing AWS CLI...\\"",
         "    sudo apt-get remove -y awscli",
-        "    curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\"",
+        "    curl \\"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\\" -o \\"awscliv2.zip\\"",
         "    unzip awscliv2.zip",
         "    sudo ./aws/install",
         "    aws --version",
