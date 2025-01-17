@@ -9,8 +9,8 @@ def call(String instanceId, String region, String s3Bucket) {
     }
 
     // Run AWS SSM Command to execute deployment script on EC2
-    sh """
-    aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=${instanceId}" --parameters 'commands=[
+    sh '''
+    aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=''' + instanceId + '''" --parameters 'commands=[
         "#!/bin/bash",
         "set -e",
 
@@ -29,9 +29,9 @@ def call(String instanceId, String region, String s3Bucket) {
         "    rm -rf awscliv2.zip aws",
         "fi",
 
-        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: \${s3Bucket})...\\"",
+        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: ''' + s3Bucket + ''' )...\\"",
         "mkdir -p /home/ubuntu/deploy",
-        "aws s3 cp s3://\${s3Bucket}/demo.zip /home/ubuntu/deploy/demo.zip",
+        "aws s3 cp s3://''' + s3Bucket + '''/demo.zip /home/ubuntu/deploy/demo.zip",
         "unzip -o /home/ubuntu/deploy/demo.zip -d /home/ubuntu/demo",
 
         "echo \\"[INFO] Checking for Docker installation...\\"",
@@ -69,6 +69,6 @@ def call(String instanceId, String region, String s3Bucket) {
         "fi",
 
         "echo \\"[INFO] Deployment Successful! Access your app on port 80.\\""
-    ]' --region ${region}
-    """
+    ]' --region ''' + region + '''
+    '''
 }
