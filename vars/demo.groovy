@@ -120,8 +120,8 @@ def call(String instanceId, String region, String s3Bucket) {
         "sudo docker images -q | xargs -r sudo docker rmi -f",
 
         "echo \\"[INFO] Checking for dangling Docker images...\\"",
-        "DANGLING_IMAGES=\$(sudo docker images --filter \\"dangling=true\\" --format \\"{{.ID}}\\")",
-        "if [ -n \\"$DANGLING_IMAGES\\" ]; then",
+        "DANGLING_IMAGES=\$(sudo docker images --filter 'dangling=true' --format '{{.ID}}')",
+        "if [ -n \"\$DANGLING_IMAGES\" ]; then",
         "    for IMAGE_ID in \$DANGLING_IMAGES; do",
         "        echo \\"[INFO] Tagging dangling image: \$IMAGE_ID as demo:latest\\"",
         "        sudo docker tag \$IMAGE_ID demo:latest",
