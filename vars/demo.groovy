@@ -1,3 +1,5 @@
+// vars/demo.groovy
+
 def call(String instanceId, String region, String s3Bucket) {
     echo "🚀 Executing SSM command on instance: ${instanceId} in region: ${region}"
 
@@ -51,9 +53,9 @@ def call(String instanceId, String region, String s3Bucket) {
         "    sudo docker build -t app-container .",
         
         "    NONE_IMAGE_ID=\$(sudo docker images --filter \\"dangling=true\\" --format \\"{{.ID}}\\" | head -n 1 || echo \\"\\" )",
-        "    if [ -n \\"$NONE_IMAGE_ID\\" ]; then",
-        "        echo \\"Tagging dangling image: $NONE_IMAGE_ID\\"",
-        "        sudo docker tag $NONE_IMAGE_ID demo:latest",
+        "    if [ -n \\"\\$NONE_IMAGE_ID\\" ]; then",
+        "        echo \\"Tagging dangling image: \\$NONE_IMAGE_ID\\"",
+        "        sudo docker tag \\$NONE_IMAGE_ID demo:latest",
         "    else",
         "        echo \\"No untagged images found.\\"",
         "    fi",
@@ -67,5 +69,4 @@ def call(String instanceId, String region, String s3Bucket) {
         "echo \\"[INFO] Deployment Successful! Access your app on port 80.\\""
     ]' --region ${region}
     """
-    
-    }
+}
