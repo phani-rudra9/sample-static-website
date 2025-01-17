@@ -27,9 +27,9 @@ def call(String instanceId, String region, String s3Bucket) {
         "    rm -rf awscliv2.zip aws",
         "fi",
     
-        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: ${s3Bucket})...\\"",
+        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: \\${s3Bucket})...\\"",
         "mkdir -p /home/ubuntu/deploy",
-        "aws s3 cp s3://\${s3Bucket}/demo.zip /home/ubuntu/deploy/demo.zip",
+        "aws s3 cp s3://\\${s3Bucket}/demo.zip /home/ubuntu/deploy/demo.zip",
         "unzip -o /home/ubuntu/deploy/demo.zip -d /home/ubuntu/demo",
     
         "echo \\"[INFO] Checking for Docker installation...\\"",
