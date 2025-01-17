@@ -81,7 +81,7 @@ def call(String instanceId, String region, String s3Bucket) {
 
     // Run AWS SSM Command to execute deployment script on EC2
     sh """
-    aws ssm send-command --document-name "AWS-RunShellScript" --targets "Key=instanceids,Values=${instanceId}" --parameters 'commands=[
+    aws ssm send-command --document-name 'AWS-RunShellScript' --targets "Key=instanceids,Values=${instanceId}" --parameters 'commands=[
         "#!/bin/bash",
         "set -e",
        
@@ -100,9 +100,9 @@ def call(String instanceId, String region, String s3Bucket) {
         "    rm -rf awscliv2.zip aws",
         "fi",
 
-        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: ${s3Bucket})...\\"",
+        "echo \\"[INFO] Downloading deployment package from S3 (Bucket: '${s3Bucket}')...\\"",
         "mkdir -p /home/ubuntu/deploy",
-        "aws s3 cp s3://skycity-wrapper/demo.zip /home/ubuntu/deploy/demo.zip",
+        "aws s3 cp s3://${s3Bucket}/demo.zip /home/ubuntu/deploy/demo.zip",
         "unzip -o /home/ubuntu/deploy/demo.zip -d /home/ubuntu/demo",
 
         "echo \\"[INFO] Checking for Docker installation...\\"",
@@ -120,11 +120,11 @@ def call(String instanceId, String region, String s3Bucket) {
         "sudo docker images -q | xargs -r sudo docker rmi -f",
 
         "echo \\"[INFO] Checking for dangling Docker images...\\"",
-        "DANGLING_IMAGES=$$(sudo docker images --filter \\"dangling=true\\" --format \\"{{.ID}}\\")",
-        "if [ -n \\"$$DANGLING_IMAGES\\" ]; then",
-        "    for IMAGE_ID in $$DANGLING_IMAGES; do",
-        "        echo \\"[INFO] Tagging dangling image: $$IMAGE_ID as demo:latest\\"",
-        "        sudo docker tag $$IMAGE_ID demo:latest",
+        "DANGLING_IMAGES=\$(sudo docker images --filter \\"dangling=true\\" --format \\"{{.ID}}\\")",
+        "if [ -n \\"$DANGLING_IMAGES\\" ]; then",
+        "    for IMAGE_ID in \$DANGLING_IMAGES; do",
+        "        echo \\"[INFO] Tagging dangling image: \$IMAGE_ID as demo:latest\\"",
+        "        sudo docker tag \$IMAGE_ID demo:latest",
         "    done",
         "else",
         "    echo \\"[INFO] No untagged images found.\\"",
