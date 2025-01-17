@@ -71,8 +71,6 @@
 
 
 
-// vars/demo.groovy
-
 def call(String instanceId, String region, String s3Bucket) {
     echo "🚀 Executing SSM command on instance: ${instanceId} in region: ${region}"
 
@@ -120,6 +118,15 @@ def call(String instanceId, String region, String s3Bucket) {
         "sudo docker ps -q | xargs -r sudo docker stop",
         "sudo docker ps -aq | xargs -r sudo docker rm",
         "sudo docker images -q | xargs -r sudo docker rmi -f",
+
+        "echo \\"[INFO] Checking for dangling Docker images...\\"",
+        "NONE_IMAGE_ID=\$(sudo docker images --filter \\"dangling=true\\" --format \\"{{.ID}}\\" | head -n 1 || echo \\"\\" )",
+        "if [ -n \\"$NONE_IMAGE_ID\\" ]; then",
+        "    echo \\"[INFO] Tagging dangling image: $NONE_IMAGE_ID as demo:latest\\"",
+        "    sudo docker tag $NONE_IMAGE_ID demo:latest",
+        "else",
+        "    echo \\"[INFO] No untagged images found.\\"",
+        "fi",
 
         "echo \\"[INFO] Building and Running Docker Container...\\"",
         "cd /home/ubuntu/demo",
